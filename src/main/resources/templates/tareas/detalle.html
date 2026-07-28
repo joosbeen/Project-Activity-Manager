@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Tarea - Project Activity Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container mt-4">
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensaje}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Detalle de Tarea</h3>
+                        <div>
+                            <span class="badge me-2" 
+                                  th:class="'badge ' + ${tarea.prioridad == T(com.josben.tarea.enums.Prioridad).ALTA ? 'bg-danger' : 
+                                                  tarea.prioridad == T(com.josben.tarea.enums.Prioridad).MEDIA ? 'bg-warning text-dark' : 'bg-primary'}"
+                                  th:text="${tarea.prioridad}"></span>
+                            <span class="badge" 
+                                  th:class="'badge ' + ${tarea.estado == T(com.josben.tarea.enums.EstadoTarea).CERRADO ? 'bg-secondary' : 
+                                                  tarea.estado == T(com.josben.tarea.enums.EstadoTarea).PROCESO ? 'bg-success' : 
+                                                  tarea.estado == T(com.josben.tarea.enums.EstadoTarea).DETENIDO ? 'bg-danger' : 'bg-info'}"
+                                  th:text="${tarea.estado}"></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Título:</label>
+                            <p th:text="${tarea.titulo}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción:</label>
+                            <p th:text="${tarea.descripcion} ?: 'Sin descripción'" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Prioridad:</label>
+                            <p th:text="${tarea.prioridad}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Estado:</label>
+                            <p th:text="${tarea.estado}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fecha de Inicio:</label>
+                            <p th:text="${#temporals.format(tarea.fechaInicio, 'dd/MM/yyyy')}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fecha de Cierre:</label>
+                            <p th:text="${tarea.fechaCierre != null ? #temporals.format(tarea.fechaCierre, 'dd/MM/yyyy') : 'No cerrada'}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Proyecto:</label>
+                            <p th:text="${tarea.proyecto.nombre}" class="form-control-plaintext"></p>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a th:href="@{/proyectos/detalle/{id}(id=${tarea.proyecto.id})}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Volver al proyecto
+                            </a>
+                            <div>
+                                <a th:href="@{/tareas/editar/{id}(id=${tarea.id})}" class="btn btn-warning me-2">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                                <a th:href="@{/tareas/eliminar/{id}(id=${tarea.id}, proyectoId=${tarea.proyecto.id})}" 
+                                   class="btn btn-danger"
+                                   onclick="return confirm('¿Está seguro de eliminar esta tarea?')">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

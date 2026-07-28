@@ -1,0 +1,26 @@
+<div th:fragment="tarjetas(tareas, proyectoId)" xmlns:th="http://www.thymeleaf.org">
+    <p th:if="${tareas.empty}" class="text-muted text-center mb-0 py-3">No hay tareas.</p>
+    <article th:each="tarea : ${tareas}" class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h2 class="h6 card-title mb-3" th:text="${tarea.titulo}">Título de tarea</h2>
+            <dl class="row small mb-3">
+                <dt class="col-5 text-muted">Prioridad</dt>
+                <dd class="col-7 mb-2"><span class="badge" th:classappend="${tarea.prioridad == T(com.josben.tarea.enums.Prioridad).ALTA ? ' bg-danger' : tarea.prioridad == T(com.josben.tarea.enums.Prioridad).MEDIA ? ' bg-warning text-dark' : ' bg-primary'}" th:text="${tarea.prioridad}">MEDIA</span></dd>
+                <dt class="col-5 text-muted">Inicio</dt>
+                <dd class="col-7 mb-0" th:text="${#temporals.format(tarea.fechaInicio, 'dd/MM/yyyy')}">01/01/2026</dd>
+            </dl>
+            <div class="d-grid gap-2">
+                <a th:href="@{/tareas/editar/{id}(id=${tarea.id})}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i> Editar</a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">Cambiar estado</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='ABIERTO', proyectoId=${proyectoId})}">Abierto</a></li>
+                        <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='PROCESO', proyectoId=${proyectoId})}">Proceso</a></li>
+                        <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='DETENIDO', proyectoId=${proyectoId})}">Detenido</a></li>
+                    </ul>
+                    <a th:if="${tarea.estado != T(com.josben.tarea.enums.EstadoTarea).CERRADO}" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='CERRADO', proyectoId=${proyectoId})}" class="btn btn-sm btn-success">Cerrar</a>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>

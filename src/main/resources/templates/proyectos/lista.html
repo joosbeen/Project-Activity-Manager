@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyectos - Project Activity Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container mt-4">
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensaje}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>Mis Proyectos</h1>
+                    <a href="/proyectos/nuevo" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Nuevo Proyecto
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <form method="get" th:action="@{/proyectos}" class="card card-body mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="q" class="form-label">Buscar proyectos</label>
+                    <input id="q" name="q" type="search" class="form-control" th:value="${q}" placeholder="Nombre o descripción">
+                </div>
+                <div class="col-md-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select id="estado" name="estado" class="form-select">
+                        <option value="">Todos</option>
+                        <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}" th:selected="${estado == estadoSeleccionado}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="orden" class="form-label">Ordenar por</label>
+                    <select id="orden" name="orden" class="form-select">
+                        <option value="nombre" th:selected="${ordenSeleccionado == 'nombre'}">Nombre</option>
+                        <option value="fecha" th:selected="${ordenSeleccionado == 'fecha'}">Fecha</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button class="btn btn-primary flex-fill" type="submit"><i class="bi bi-search"></i> Buscar</button>
+                    <a th:href="@{/proyectos}" class="btn btn-outline-secondary" title="Limpiar filtros"><i class="bi bi-x-lg"></i></a>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div th:if="${proyectos.empty}" class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> No se encontraron proyectos con los filtros aplicados.
+                </div>
+
+                <div th:if="${!proyectos.empty}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Fecha Creación</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="proyecto : ${proyectos}">
+                                            <td>
+                                                <strong th:text="${proyecto.nombre}"></strong>
+                                            </td>
+                                            <td th:text="${proyecto.descripcion} ?: '-'"></td>
+                                            <td th:text="${#temporals.format(proyecto.fechaCreacion, 'dd/MM/yyyy')}"></td>
+                                            <td>
+                                                <span class="badge" 
+                                                      th:class="'badge ' + ${proyecto.estado == T(com.josben.tarea.enums.EstadoProyecto).PROCESO ? 'bg-success' : 
+                                                                      proyecto.estado == T(com.josben.tarea.enums.EstadoProyecto).PENDIENTE ? 'bg-warning text-dark' : 
+                                                                      proyecto.estado == T(com.josben.tarea.enums.EstadoProyecto).DETENIDO ? 'bg-danger' : 'bg-secondary'}"
+                                                      th:text="${proyecto.estado}"></span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a th:href="@{/proyectos/detalle/{id}(id=${proyecto.id})}" 
+                                                       class="btn btn-sm btn-info" title="Ver detalle">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a th:href="@{/proyectos/editar/{id}(id=${proyecto.id})}" 
+                                                       class="btn btn-sm btn-warning" title="Editar">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a th:href="@{/proyectos/eliminar/{id}(id=${proyecto.id})}" 
+                                                       class="btn btn-sm btn-danger" 
+                                                       onclick="return confirm('¿Está seguro de eliminar este proyecto?')"
+                                                       title="Eliminar">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
