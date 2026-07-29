@@ -39,25 +39,31 @@
         </section>
 
         <div class="row g-3 pb-4">
-            <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl">
                 <section class="card h-100 border-info">
                     <div class="card-header bg-info text-dark d-flex justify-content-between"><strong>Abierto</strong><span class="badge bg-dark" th:text="${tareasAbiertas.size()}">0</span></div>
                     <div class="card-body bg-body-secondary" th:replace="~{fragments/kanban :: tarjetas(${tareasAbiertas}, ${proyecto.id})}"></div>
                 </section>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl">
                 <section class="card h-100 border-success">
                     <div class="card-header bg-success text-white d-flex justify-content-between"><strong>Proceso</strong><span class="badge bg-dark" th:text="${tareasEnProceso.size()}">0</span></div>
                     <div class="card-body bg-body-secondary" th:replace="~{fragments/kanban :: tarjetas(${tareasEnProceso}, ${proyecto.id})}"></div>
                 </section>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl">
+                <section class="card h-100 border-primary">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between"><strong>QA</strong><span class="badge bg-dark" th:text="${tareasQA.size()}">0</span></div>
+                    <div class="card-body bg-body-secondary" th:replace="~{fragments/kanban :: tarjetas(${tareasQA}, ${proyecto.id})}"></div>
+                </section>
+            </div>
+            <div class="col-12 col-md-6 col-xl">
                 <section class="card h-100 border-danger">
                     <div class="card-header bg-danger text-white d-flex justify-content-between"><strong>Detenido</strong><span class="badge bg-dark" th:text="${tareasDetenidas.size()}">0</span></div>
                     <div class="card-body bg-body-secondary" th:replace="~{fragments/kanban :: tarjetas(${tareasDetenidas}, ${proyecto.id})}"></div>
                 </section>
             </div>
-            <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl">
                 <section class="card h-100 border-secondary">
                     <div class="card-header bg-secondary text-white d-flex justify-content-between"><strong>Cerrado</strong><span class="badge bg-dark" th:text="${tareasCerradas.size()}">0</span></div>
                     <div class="card-body bg-body-secondary" th:replace="~{fragments/kanban :: tarjetas(${tareasCerradas}, ${proyecto.id})}"></div>

@@ -55,6 +55,7 @@ public class HomeController {
         model.addAttribute("proyectosCerrados", proyectoService.contarProyectosPorEstado(EstadoProyecto.CERRADO));
         model.addAttribute("tareasAbiertas", tareaService.contarTareasPorEstado(EstadoTarea.ABIERTO));
         model.addAttribute("tareasEnProceso", tareaService.contarTareasPorEstado(EstadoTarea.PROCESO));
+        model.addAttribute("tareasQA", tareaService.contarTareasPorEstado(EstadoTarea.QA));
         model.addAttribute("tareasDetenidas", tareaService.contarTareasPorEstado(EstadoTarea.DETENIDO));
         model.addAttribute("tareasCerradas", tareaService.contarTareasPorEstado(EstadoTarea.CERRADO));
         model.addAttribute("tareasAltaPrioridad", tareaService.contarTareasPorPrioridad(Prioridad.ALTA));

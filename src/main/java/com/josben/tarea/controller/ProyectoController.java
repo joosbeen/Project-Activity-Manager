@@ -129,6 +129,7 @@ public class ProyectoController {
             model.addAttribute("tareas", tareas);
             model.addAttribute("tareasAbiertas", tareasPorEstado.getOrDefault(EstadoTarea.ABIERTO, List.of()));
             model.addAttribute("tareasEnProceso", tareasPorEstado.getOrDefault(EstadoTarea.PROCESO, List.of()));
+            model.addAttribute("tareasQA", tareasPorEstado.getOrDefault(EstadoTarea.QA, List.of()));
             model.addAttribute("tareasDetenidas", tareasPorEstado.getOrDefault(EstadoTarea.DETENIDO, List.of()));
             model.addAttribute("tareasCerradas", tareasPorEstado.getOrDefault(EstadoTarea.CERRADO, List.of()));
             return "proyectos/detalle";

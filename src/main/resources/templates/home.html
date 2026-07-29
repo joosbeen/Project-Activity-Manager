@@ -82,16 +82,17 @@
         <section class="mb-4">
             <h2 class="h4 mb-3">Tareas</h2>
             <div class="row g-3">
-                <div class="col-6 col-lg-3"><div class="card border-info h-100"><div class="card-body"><div class="text-muted small">Abiertas</div><div class="display-6" th:text="${tareasAbiertas}">0</div></div></div></div>
-                <div class="col-6 col-lg-3"><div class="card border-success h-100"><div class="card-body"><div class="text-muted small">En proceso</div><div class="display-6" th:text="${tareasEnProceso}">0</div></div></div></div>
-                <div class="col-6 col-lg-3"><div class="card border-danger h-100"><div class="card-body"><div class="text-muted small">Detenidas</div><div class="display-6" th:text="${tareasDetenidas}">0</div></div></div></div>
-                <div class="col-6 col-lg-3"><div class="card border-secondary h-100"><div class="card-body"><div class="text-muted small">Cerradas</div><div class="display-6" th:text="${tareasCerradas}">0</div></div></div></div>
+                <div class="col-6 col-lg"><div class="card border-info h-100"><div class="card-body"><div class="text-muted small">Abiertas</div><div class="display-6" th:text="${tareasAbiertas}">0</div></div></div></div>
+                <div class="col-6 col-lg"><div class="card border-success h-100"><div class="card-body"><div class="text-muted small">En proceso</div><div class="display-6" th:text="${tareasEnProceso}">0</div></div></div></div>
+                <div class="col-6 col-lg"><div class="card border-primary h-100"><div class="card-body"><div class="text-muted small">En QA</div><div class="display-6" th:text="${tareasQA}">0</div></div></div></div>
+                <div class="col-6 col-lg"><div class="card border-danger h-100"><div class="card-body"><div class="text-muted small">Detenidas</div><div class="display-6" th:text="${tareasDetenidas}">0</div></div></div></div>
+                <div class="col-6 col-lg"><div class="card border-secondary h-100"><div class="card-body"><div class="text-muted small">Cerradas</div><div class="display-6" th:text="${tareasCerradas}">0</div></div></div></div>
             </div>
         </section>
 
         <section class="row g-4 mb-4">
             <div class="col-lg-4"><div class="card h-100"><div class="card-header">Estado de proyectos</div><div class="card-body"><canvas id="graficaProyectos" th:data-valores="|${proyectosPendientes},${proyectosEnProceso},${proyectosDetenidos},${proyectosCerrados}|"></canvas></div></div></div>
-            <div class="col-lg-4"><div class="card h-100"><div class="card-header">Estado de tareas</div><div class="card-body"><canvas id="graficaTareas" th:data-valores="|${tareasAbiertas},${tareasEnProceso},${tareasDetenidas},${tareasCerradas}|"></canvas></div></div></div>
+            <div class="col-lg-4"><div class="card h-100"><div class="card-header">Estado de tareas</div><div class="card-body"><canvas id="graficaTareas" th:data-valores="|${tareasAbiertas},${tareasEnProceso},${tareasQA},${tareasDetenidas},${tareasCerradas}|"></canvas></div></div></div>
             <div class="col-lg-4"><div class="card h-100"><div class="card-header">Prioridades</div><div class="card-body"><canvas id="graficaPrioridades" th:data-valores="|${tareasAltaPrioridad},${tareasMediaPrioridad},${tareasBajaPrioridad}|"></canvas></div></div></div>
         </section>
 
@@ -142,6 +143,7 @@
                                                 <span class="badge" 
                                                       th:class="'badge ' + ${tarea.estado == T(com.josben.tarea.enums.EstadoTarea).CERRADO ? 'bg-secondary' : 
                                                                       tarea.estado == T(com.josben.tarea.enums.EstadoTarea).PROCESO ? 'bg-success' : 
+                                                                      tarea.estado == T(com.josben.tarea.enums.EstadoTarea).QA ? 'bg-primary' :
                                                                       tarea.estado == T(com.josben.tarea.enums.EstadoTarea).DETENIDO ? 'bg-danger' : 'bg-info'}"
                                                       th:text="${tarea.estado}"></span>
                                             </td>
@@ -190,7 +192,7 @@
             });
         }
         crearGrafica('graficaProyectos', ['Pendiente', 'Proceso', 'Detenido', 'Cerrado'], ['#ffc107', '#198754', '#dc3545', '#6c757d']);
-        crearGrafica('graficaTareas', ['Abierta', 'Proceso', 'Detenida', 'Cerrada'], ['#0dcaf0', '#198754', '#dc3545', '#6c757d']);
+        crearGrafica('graficaTareas', ['Abierta', 'Proceso', 'QA', 'Detenida', 'Cerrada'], ['#0dcaf0', '#198754', '#0d6efd', '#dc3545', '#6c757d']);
         crearGrafica('graficaPrioridades', ['Alta', 'Media', 'Baja'], ['#dc3545', '#ffc107', '#0d6efd']);
     </script>
 </body>

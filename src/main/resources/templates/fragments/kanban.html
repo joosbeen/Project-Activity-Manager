@@ -16,6 +16,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='ABIERTO', proyectoId=${proyectoId})}">Abierto</a></li>
                         <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='PROCESO', proyectoId=${proyectoId})}">Proceso</a></li>
+                        <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='QA', proyectoId=${proyectoId})}">QA</a></li>
                         <li><a class="dropdown-item" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='DETENIDO', proyectoId=${proyectoId})}">Detenido</a></li>
                     </ul>
                     <a th:if="${tarea.estado != T(com.josben.tarea.enums.EstadoTarea).CERRADO}" th:href="@{/tareas/cambiar-estado/{id}(id=${tarea.id}, estado='CERRADO', proyectoId=${proyectoId})}" class="btn btn-sm btn-success">Cerrar</a>

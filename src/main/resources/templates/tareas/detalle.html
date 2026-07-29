@@ -33,6 +33,7 @@
                             <span class="badge" 
                                   th:class="'badge ' + ${tarea.estado == T(com.josben.tarea.enums.EstadoTarea).CERRADO ? 'bg-secondary' : 
                                                   tarea.estado == T(com.josben.tarea.enums.EstadoTarea).PROCESO ? 'bg-success' : 
+                                                  tarea.estado == T(com.josben.tarea.enums.EstadoTarea).QA ? 'bg-primary' :
                                                   tarea.estado == T(com.josben.tarea.enums.EstadoTarea).DETENIDO ? 'bg-danger' : 'bg-info'}"
                                   th:text="${tarea.estado}"></span>
                         </div>
