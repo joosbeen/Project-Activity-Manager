@@ -1,5 +1,6 @@
 package com.josben.tarea.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Comparator;
@@ -156,5 +157,12 @@ public class TareaServiceImpl implements TareaService {
     @Transactional(readOnly = true)
     public List<Tarea> listarTareasRecientes() {
         return tareaRepository.findTop5ByOrderByFechaInicioDescIdDesc();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Tarea> listarTareasCerradasRecientes() {
+        LocalDate dosSemanasAtras = LocalDate.now().minusWeeks(2);
+        return tareaRepository.findTareasCerradasRecientes(dosSemanasAtras);
     }
 }

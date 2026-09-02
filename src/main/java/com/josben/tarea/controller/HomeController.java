@@ -63,6 +63,7 @@ public class HomeController {
         model.addAttribute("tareasBajaPrioridad", tareaService.contarTareasPorPrioridad(Prioridad.BAJA));
         model.addAttribute("proyectosRecientes", proyectoService.listarProyectosRecientes());
         model.addAttribute("tareasRecientes", tareaService.listarTareasRecientes());
+        model.addAttribute("tareasCerradasRecientes", tareaService.listarTareasCerradasRecientes());
 
         return "home";
     }

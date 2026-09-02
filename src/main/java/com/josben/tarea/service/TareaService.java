@@ -38,4 +38,6 @@ public interface TareaService {
     long contarTareasPorPrioridad(Prioridad prioridad);
 
     List<Tarea> listarTareasRecientes();
+
+    List<Tarea> listarTareasCerradasRecientes();
 }
