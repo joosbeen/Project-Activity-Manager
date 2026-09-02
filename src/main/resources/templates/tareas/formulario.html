@@ -90,6 +90,105 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sección de comentarios - solo visible al editar -->
+        <div th:if="${tarea.id != null}" class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Comentarios</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar nuevo comentario -->
+                        <form th:action="@{/comentarios/guardar}" th:method="post" th:object="${nuevoComentario}" class="mb-4">
+                            <input type="hidden" name="tareaId" th:value="${tarea.id}">
+                            
+                            <div class="mb-3">
+                                <label for="comentarioTitulo" class="form-label">Título del Comentario *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="comentarioTitulo" 
+                                       th:field="*{titulo}"
+                                       required
+                                       maxlength="200">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="comentarioDescripcion" class="form-label">Descripción del Comentario</label>
+                                <textarea class="form-control" 
+                                          id="comentarioDescripcion" 
+                                          th:field="*{descripcion}"
+                                          rows="3" 
+                                          maxlength="1000"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="comentarioEstado" class="form-label">Estado</label>
+                                <select class="form-select" 
+                                        id="comentarioEstado" 
+                                        th:field="*{estado}">
+                                    <option th:each="estado : ${estadosComentario}" 
+                                            th:value="${estado}" 
+                                            th:text="${estado}"></option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Agregar Comentario
+                            </button>
+                        </form>
+
+                        <hr>
+
+                        <!-- Lista de comentarios existentes -->
+                        <div th:if="${comentarios.empty}" class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> No hay comentarios en esta tarea.
+                        </div>
+
+                        <div th:if="${!comentarios.empty}">
+                            <div class="list-group">
+                                <div th:each="comentario : ${comentarios}" class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1" th:text="${comentario.titulo}">Título del comentario</h5>
+                                            <p class="mb-1" th:text="${comentario.descripcion}">Descripción del comentario</p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar"></i> 
+                                                <span th:text="${#temporals.format(comentario.fecha, 'dd/MM/yyyy')}"></span>
+                                            </small>
+                                            <span class="badge ms-2" 
+                                                  th:class="'badge ' + ${comentario.estado == T(com.josben.tarea.enums.EstadoComentario).CERRADO ? 'bg-secondary' : 
+                                                                  comentario.estado == T(com.josben.tarea.enums.EstadoComentario).PROCESO ? 'bg-success' : 'bg-info'}"
+                                                  th:text="${comentario.estado}"></span>
+                                        </div>
+                                        <div class="btn-group-vertical ms-3">
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-gear"></i> Estado
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li th:each="estado : ${estadosComentario}">
+                                                        <a class="dropdown-item" 
+                                                           th:href="@{/comentarios/cambiar-estado/{id}(id=${comentario.id}, estado=${estado}, tareaId=${tarea.id})}"
+                                                           th:text="${estado}"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <a th:href="@{/comentarios/eliminar/{id}(id=${comentario.id}, tareaId=${tarea.id})}" 
+                                               class="btn btn-sm btn-outline-danger mt-1"
+                                               onclick="return confirm('¿Está seguro de eliminar este comentario?')"
+                                               title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>

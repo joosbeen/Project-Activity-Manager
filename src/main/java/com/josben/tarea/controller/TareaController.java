@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.josben.tarea.entity.Comentario;
 import com.josben.tarea.entity.Proyecto;
 import com.josben.tarea.entity.Tarea;
+import com.josben.tarea.enums.EstadoComentario;
 import com.josben.tarea.enums.EstadoTarea;
 import com.josben.tarea.enums.Prioridad;
 import com.josben.tarea.exception.BusinessException;
+import com.josben.tarea.service.ComentarioService;
 import com.josben.tarea.service.ProyectoService;
 import com.josben.tarea.service.TareaService;
 
@@ -28,11 +31,13 @@ public class TareaController {
 
     private final TareaService tareaService;
     private final ProyectoService proyectoService;
+    private final ComentarioService comentarioService;
 
     @Autowired
-    public TareaController(TareaService tareaService, ProyectoService proyectoService) {
+    public TareaController(TareaService tareaService, ProyectoService proyectoService, ComentarioService comentarioService) {
         this.tareaService = tareaService;
         this.proyectoService = proyectoService;
+        this.comentarioService = comentarioService;
     }
 
     @GetMapping("/nuevo/{proyectoId}")
@@ -83,6 +88,9 @@ public class TareaController {
             model.addAttribute("proyectoId", tarea.getProyecto().getId());
             model.addAttribute("estados", EstadoTarea.values());
             model.addAttribute("prioridades", Prioridad.values());
+            model.addAttribute("comentarios", comentarioService.listarComentariosPorTarea(id));
+            model.addAttribute("estadosComentario", EstadoComentario.values());
+            model.addAttribute("nuevoComentario", new Comentario());
             return "tareas/formulario";
         } catch (BusinessException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
